@@ -1,18 +1,42 @@
-{{ if gt .Paginator.TotalPages 1 }}
- 
-<nav class="cf pa3">
-    {{ if .Paginator.HasNext }}
-    <a class="fl dib link dim black f6 f5-ns b pa2" title="Next Page" href="{{ .Paginator.Next.URL }}">
-        &larr; Previous
-    </a>
-    {{ end }}
-    <div class="pagination">
+{{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
+  <div class="pagination-bar">
+    <ul class="pagination">
+      {{ if .Site.Params.swapPaginator }}
         {{ if .Paginator.HasPrev }}
-        <a class="fl dib link dim black f6 f5-ns b pa2" title="Previous Page" href="{{ .Paginator.Prev.URL }}">
-            Next &rarr;
-        </a>
+          <li class="pagination-prev">
+            <a class="btn btn--default btn--small" href="{{ .Paginator.Prev.URL }}">
+              <i class="fa fa-angle-left text-base icon-mr"></i>
+              <span>{{ i18n "pagination.older_posts" }}</span>
+            </a>
+          </li>
         {{ end }}
-    </div>
-</nav>
- 
+        {{ if .Paginator.HasNext }}
+          <li class="pagination-next">
+            <a class="btn btn--default btn--small" href="{{ .Paginator.Next.URL }}">
+              <span>{{ i18n "pagination.newer_posts" }}</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        {{ end }}
+      {{ else }}
+        {{ if .Paginator.HasPrev }}
+          <li class="pagination-prev">
+            <a class="btn btn--default btn--small" href="{{ .Paginator.Prev.URL }}">
+              <i class="fa fa-angle-left text-base icon-mr"></i>
+              <span>{{ i18n "pagination.newer_posts" }}</span>
+            </a>
+          </li>
+        {{ end }}
+        {{ if .Paginator.HasNext }}
+          <li class="pagination-next">
+            <a class="btn btn--default btn--small" href="{{ .Paginator.Next.URL }}">
+              <span>{{ i18n "pagination.older_posts" }}</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        {{ end }}
+      {{ end }}
+      <li class="pagination-number">{{ i18n "pagination.page" . }} {{ i18n "pagination.of" . }}</li>
+    </ul>
+  </div>
 {{ end }}
